@@ -1,0 +1,21 @@
+{
+  "name": "wealth-tracker-cron-crypto",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "repository": "https://github.com/adenh93/wealth-tracker-cron-crypto.git",
+  "author": "Aden Herold",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node ./src/index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "node-fetch": "2.6.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.6",
+    "@types/node-fetch": "^2.5.12",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.4.4"
+  }
+}
