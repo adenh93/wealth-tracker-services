@@ -1,10 +1,9 @@
-import dotenv from "dotenv"
 import { getCoinMarketCapData } from "./utils/coinMarketCapAPI"
-
-dotenv.config()
+import { updateCryptoCurrencyCache } from "./utils/database"
 
 export const run = async () => {
   const data = await getCoinMarketCapData()
+  await updateCryptoCurrencyCache(data)
 }
 
 run()

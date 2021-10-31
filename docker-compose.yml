@@ -5,12 +5,26 @@ services:
     image: postgres
     restart: always
     environment:
+      POSTGRES_DB: wealth_tracker
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: wealth_tracker
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+
+  crypto-cron-job:
+    build:
+      context: ./crypto-cron-job/
+      target: development
+    image: wealth-tracker-services/crypto-cron-job:development
+    volumes:
+      - ./crypto-cron-job/src:/usr/app/src
+    env_file:
+      - ./crypto-cron-job/.env
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db
