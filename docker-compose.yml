@@ -20,15 +20,15 @@ services:
     ports:
       - 6379:6379
 
-  crypto-cron-job:
+  crypto-sync-job:
     build:
-      context: ./crypto-cron-job/
+      context: ./crypto-sync-job/
       target: development
-    image: wealth-tracker-services/crypto-cron-job:development
+    image: wealth-tracker-services/crypto-sync-job:development
     volumes:
-      - ./crypto-cron-job/src:/usr/app/src
+      - ./crypto-sync-job/src:/usr/app/src
     env_file:
-      - ./crypto-cron-job/.env
+      - ./crypto-sync-job/.env
     environment:
       - NODE_ENV=development
     depends_on:
