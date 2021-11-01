@@ -32,5 +32,7 @@ export const getCoinMarketCapData = async (): Promise<CoinMarketCapCoin[]> => {
     if (data.length < RESULTS_PER_PAGE) break
   }
 
+  console.log(`Fetched ${idMapData.length} cryptocurrency records.`)
+
   return idMapData
 }

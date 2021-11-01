@@ -9,11 +9,13 @@
     "start": "ts-node ./src/index.ts"
   },
   "dependencies": {
+    "bull": "^4.1.0",
     "knex": "^0.95.12",
     "node-fetch": "2.6.5",
     "pg": "^8.7.1"
   },
   "devDependencies": {
+    "@types/bull": "^3.15.5",
     "@types/node": "^16.11.6",
     "@types/node-fetch": "^2.5.12",
     "ts-node": "^10.4.0",

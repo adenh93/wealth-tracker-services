@@ -15,6 +15,11 @@ services:
     ports:
       - 8080:8080
 
+  redis:
+    image: redis:6.2.6-alpine
+    ports:
+      - 6379:6379
+
   crypto-cron-job:
     build:
       context: ./crypto-cron-job/
@@ -28,3 +33,4 @@ services:
       - NODE_ENV=development
     depends_on:
       - db
+      - redis

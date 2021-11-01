@@ -1,5 +1,6 @@
 import knex from "knex"
 import config from "../../knexfile"
+import { TABLE_NAME } from "../constants"
 import { CoinMarketCapCoin, CryptoCurrency } from "../types"
 
 export const mapToCryptoCurrency = (
@@ -14,13 +15,14 @@ export const mapToCryptoCurrency = (
 export const updateCryptoCurrencyCache = async (
   idMappings: CoinMarketCapCoin[]
 ): Promise<void> => {
-  const tableName = "cryptocurrency"
   const db = knex(config)
 
-  await db.transaction(async transaction => {
-    const queries = idMappings.map(coin => {
+  console.log("Updating Cryptocurrency records in database.")
+
+  await db.transaction(async (transaction) => {
+    const queries = idMappings.map((coin) => {
       const mapped: CryptoCurrency = mapToCryptoCurrency(coin)
-      return transaction(tableName).insert(mapped).onConflict("id").merge()
+      return transaction(TABLE_NAME).insert(mapped).onConflict("id").merge()
     })
 
     return Promise.all(queries)
