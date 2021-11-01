@@ -34,3 +34,19 @@ services:
     depends_on:
       - db
       - redis
+
+  wealth-tracker-api:
+    build:
+      context: ./wealth-tracker-api/
+      target: development
+    image: wealth-tracker-services/wealth-tracker-api:development
+    ports:
+      - 4000:4000
+    volumes:
+      - ./wealth-tracker-api/src:/usr/app/src
+    env_file:
+      - ./wealth-tracker-api/.env
+    environment:
+      - NODE_ENV=development
+    depends_on:
+      - db

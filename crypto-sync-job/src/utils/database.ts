@@ -1,5 +1,5 @@
 import knex from "knex"
-import config from "../../knexfile"
+import config from "../knexfile"
 import { TABLE_NAME } from "../constants"
 import { CoinMarketCapCoin, CryptoCurrency } from "../types"
 
