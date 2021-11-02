@@ -37,15 +37,15 @@ services:
 
   wealth-tracker-api:
     build:
-      context: ./wealth-tracker-api/
+      context: ./dashboard-api/
       target: development
-    image: wealth-tracker-services/wealth-tracker-api:development
+    image: wealth-tracker-services/dashboard-api:development
     ports:
       - 4000:4000
     volumes:
-      - ./wealth-tracker-api/src:/usr/app/src
+      - ./dashboard-api/src:/usr/app/src
     env_file:
-      - ./wealth-tracker-api/.env
+      - ./dashboard-api/.env
     environment:
       - NODE_ENV=development
     depends_on:

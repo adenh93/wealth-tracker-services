@@ -1,0 +1,23 @@
+{
+  "name": "wealth-tracker-api",
+  "version": "1.0.0",
+  "main": "src/index.ts",
+  "author": "Aden Herold",
+  "license": "MIT",
+  "scripts": {
+    "start": "ts-node-dev src/index.ts",
+    "codegen": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "apollo-server": "^3.4.0",
+    "graphql": "^15.7.1",
+    "knex": "^0.95.12",
+    "pg": "^8.7.1"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.2.1",
+    "@graphql-codegen/typescript": "^2.2.4",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.4.4"
+  }
+}
