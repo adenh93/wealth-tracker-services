@@ -1,4 +1,4 @@
-import { Context } from "../../types"
+import { Context, TableNames } from "../../types"
 import {
   CryptoCurrency,
   QueryCryptoCurrenciesArgs,
@@ -9,14 +9,14 @@ const cryptoCurrencies = async (
   { query }: QueryCryptoCurrenciesArgs,
   { knex }: Context
 ): Promise<CryptoCurrency[]> => {
-  const select = knex("cryptocurrency")
+  const builder = knex(TableNames.CryptoCurrency)
 
   if (query)
-    select
+    builder
       .whereRaw('"name" ILIKE ?', [`%${query}%`])
       .orWhereRaw('"symbol" ILIKE ?', [`%${query}%`])
 
-  return select.orderBy("rank", "asc")
+  return builder.orderBy("rank", "asc").limit(25)
 }
 
 export default cryptoCurrencies
