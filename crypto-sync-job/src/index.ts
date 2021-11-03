@@ -12,11 +12,11 @@ cryptoSyncQueue.on("completed", () => {
   console.log("Finished syncing cryptocurrency data.")
 })
 
-cryptoSyncQueue.on("failed", (err) => {
+cryptoSyncQueue.on("failed", err => {
   console.error("An error occured while syncing cryptocurrencies: ", err)
 })
 
-cryptoSyncQueue.process(async (_job) => {
+cryptoSyncQueue.process(async _job => {
   console.log("Starting cryptocurrency sync.")
   const data = await getCoinMarketCapData()
   await updateCryptoCurrencyCache(data)

@@ -1,22 +1,33 @@
-import { Context, TableNames } from "../../types"
+import { Op, FindOptions } from "sequelize"
+import { CryptoCurrencyModel } from "../../database/models"
 import {
-  CryptoCurrency,
-  QueryCryptoCurrenciesArgs,
-} from "../../generated/types"
+  CryptoCurrencyAttributes,
+  CryptoCurrencyInstance,
+} from "../../database/models/CryptoCurrencyModel"
+import { QueryCryptoCurrenciesArgs } from "../../generated/types"
 
 const cryptoCurrencies = async (
   _parent: any,
-  { query }: QueryCryptoCurrenciesArgs,
-  { knex }: Context
-): Promise<CryptoCurrency[]> => {
-  const builder = knex(TableNames.CryptoCurrency)
+  { query }: QueryCryptoCurrenciesArgs
+): Promise<CryptoCurrencyInstance[]> => {
+  console.log(query)
+  let options: FindOptions<CryptoCurrencyAttributes> = {
+    limit: 25,
+    raw: true,
+    nest: true,
+  }
 
   if (query)
-    builder
-      .whereRaw('"name" ILIKE ?', [`%${query}%`])
-      .orWhereRaw('"symbol" ILIKE ?', [`%${query}%`])
+    options.where = {
+      [Op.or]: [
+        { name: { [Op.iLike]: `%${query}%` } },
+        { symbol: { [Op.iLike]: `%${query}%` } },
+      ],
+    }
 
-  return builder.orderBy("rank", "asc").limit(25)
+  console.log(options)
+
+  return CryptoCurrencyModel.findAll(options)
 }
 
 export default cryptoCurrencies

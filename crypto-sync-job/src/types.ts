@@ -7,7 +7,7 @@ export interface CMCIDMapResponse {
 }
 
 export interface CoinMarketCapCoin {
-  id: string
+  id: number
   rank: number
   name: string
   symbol: string
@@ -18,7 +18,7 @@ export interface CoinMarketCapCoin {
 }
 
 export interface CryptoCurrency {
-  id: string
+  id: number
   rank: number
   name: string
   symbol: string

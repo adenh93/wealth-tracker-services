@@ -1,16 +1,3 @@
-import { Knex } from "knex"
-
-export interface Context {
-  knex: Knex
-}
-
-export interface CryptoCurrency {
-  id: string
-  rank: number
-  name: string
-  symbol: string
-}
-
 export interface CMCQuoteData {
   id: number
   name: string
@@ -51,11 +38,6 @@ export interface CMCQuotesResponse {
 
 export interface Map<T> {
   [key: string]: T
-}
-
-export enum TableNames {
-  CryptoCurrency = "cryptocurrency",
-  CryptoCurrencyHolding = "cryptocurrency_holding",
 }
 
 export enum CMCEndpoints {

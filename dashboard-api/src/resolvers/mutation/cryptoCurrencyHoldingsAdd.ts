@@ -1,32 +1,33 @@
 import { ApolloError } from "apollo-server-errors"
-import { Context, TableNames } from "../../types"
-import {
-  CryptoCurrency,
-  CryptoCurrencyHolding,
-  MutationCryptoCurrencyHoldingsAddArgs,
-} from "../../generated/types"
+import { MutationCryptoCurrencyHoldingsAddArgs } from "../../generated/types"
 import { getQuotesDataLatest } from "../../utils/coinMarketCapAPI"
+import {
+  CryptoCurrencyModel,
+  CryptoCurrencyHoldingModel,
+} from "../../database/models"
+import { CryptoCurrencyHoldingInstance } from "../../database/models/CryptoCurrencyHoldingModel"
+import { CryptoCurrencyInstance } from "../../database/models/CryptoCurrencyModel"
 
 const cryptoCurrencyHoldingsAdd = async (
   _parent: any,
-  { input }: MutationCryptoCurrencyHoldingsAddArgs,
-  { knex }: Context
-): Promise<CryptoCurrencyHolding> => {
+  { input }: MutationCryptoCurrencyHoldingsAddArgs
+): Promise<CryptoCurrencyHoldingInstance> => {
   const { id, holdings } = input
 
   if (holdings <= 0)
     throw new ApolloError("You must add at least one unit to your holdings.")
 
-  const cryptocurrency = await knex<CryptoCurrency>(TableNames.CryptoCurrency)
-    .where("id", "=", id)
-    .first()
+  const cryptoCurrency: CryptoCurrencyInstance =
+    await CryptoCurrencyModel.findOne({
+      where: { id },
+    })
 
-  if (!cryptocurrency)
+  if (!cryptoCurrency)
     throw new ApolloError("The specified Cryptocurrency asset does not exist.")
 
-  const existingHolding = await knex(TableNames.CryptoCurrencyHolding)
-    .where("cryptocurrency_id", "=", id)
-    .first()
+  const existingHolding = await CryptoCurrencyHoldingModel.findOne({
+    where: { cryptoCurrencyId: id },
+  })
 
   if (existingHolding)
     throw new ApolloError(
@@ -36,19 +37,13 @@ const cryptoCurrencyHoldingsAdd = async (
   const { quote } = await getQuotesDataLatest(id)
   const { price, percent_change_24h } = quote["AUD"]
 
-  const newHolding = {
-    cryptocurrency_id: id,
+  return CryptoCurrencyHoldingModel.create({
     price,
-    percent_change_24h,
     holdings,
-  } as CryptoCurrencyHolding
-
-  await knex(TableNames.CryptoCurrencyHolding).insert(newHolding)
-
-  return {
-    ...newHolding,
-    cryptocurrency,
-  }
+    cryptoCurrencyId: id,
+    percentChange24h: percent_change_24h,
+    netHoldingsValue: holdings * price,
+  })
 }
 
 export default cryptoCurrencyHoldingsAdd

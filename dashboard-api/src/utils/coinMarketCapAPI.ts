@@ -18,12 +18,12 @@ export const getCoinMarketCapEndpoint = (
 }
 
 export const getQuotesDataLatest = async (
-  id: string
+  id: number
 ): Promise<CMCQuoteData> => {
   const url: string = getCoinMarketCapEndpoint(
     CMCEndpoints.CryptoCurrencyQuotes,
     {
-      id,
+      id: String(id),
       convert: "AUD",
     }
   )

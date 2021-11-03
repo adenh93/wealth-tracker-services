@@ -13,7 +13,7 @@ export type Scalars = {
 
 export type CryptoCurrency = {
   __typename?: 'CryptoCurrency';
-  id: Scalars['ID'];
+  id: Scalars['Int'];
   name: Scalars['String'];
   rank: Scalars['Int'];
   symbol: Scalars['String'];
@@ -21,16 +21,17 @@ export type CryptoCurrency = {
 
 export type CryptoCurrencyHolding = {
   __typename?: 'CryptoCurrencyHolding';
-  cryptocurrency: CryptoCurrency;
-  cryptocurrency_id: Scalars['ID'];
+  cryptoCurrency?: Maybe<CryptoCurrency>;
+  cryptoCurrencyId: Scalars['Int'];
   holdings: Scalars['Float'];
-  percent_change_24h: Scalars['Float'];
+  netHoldingsValue: Scalars['Float'];
+  percentChange24h: Scalars['Float'];
   price: Scalars['Float'];
 };
 
 export type CryptoCurrencyHoldingsAddInput = {
   holdings: Scalars['Float'];
-  id: Scalars['ID'];
+  id: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -46,6 +47,7 @@ export type MutationCryptoCurrencyHoldingsAddArgs = {
 export type Query = {
   __typename?: 'Query';
   cryptoCurrencies?: Maybe<Array<CryptoCurrency>>;
+  cryptoCurrencyHoldings?: Maybe<Array<CryptoCurrencyHolding>>;
 };
 
 
