@@ -10,6 +10,9 @@ const typeDefs = gql`
     cryptoCurrencyHoldingsAdd(
       input: CryptoCurrencyHoldingsAddInput!
     ): CryptoCurrencyHolding
+    cryptoCurrencyHoldingsUpdate(
+      input: CryptoCurrencyHoldingsUpdateInput!
+    ): CryptoCurrencyHolding
   }
 
   type CryptoCurrency {
@@ -20,6 +23,7 @@ const typeDefs = gql`
   }
 
   type CryptoCurrencyHolding {
+    id: Int!
     cryptoCurrencyId: Int!
     cryptoCurrency: CryptoCurrency
     price: Float!
@@ -29,6 +33,11 @@ const typeDefs = gql`
   }
 
   input CryptoCurrencyHoldingsAddInput {
+    cryptoCurrencyId: Int!
+    holdings: Float!
+  }
+
+  input CryptoCurrencyHoldingsUpdateInput {
     id: Int!
     holdings: Float!
   }

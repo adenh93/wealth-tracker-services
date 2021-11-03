@@ -11,20 +11,20 @@ const cryptoCurrencyHoldingsAdd = async (
   _parent: any,
   { input }: MutationCryptoCurrencyHoldingsAddArgs
 ): Promise<CryptoCurrencyHoldingOutput> => {
-  const { id, holdings } = input
+  const { cryptoCurrencyId, holdings } = input
 
   if (holdings <= 0)
     throw new ApolloError("You must add at least one unit to your holdings.")
 
   const cryptoCurrency = await CryptoCurrencyModel.findOne({
-    where: { id },
+    where: { id: cryptoCurrencyId },
   })
 
   if (!cryptoCurrency)
     throw new ApolloError("The specified Cryptocurrency asset does not exist.")
 
   const existingHolding = await CryptoCurrencyHoldingModel.findOne({
-    where: { cryptoCurrencyId: id },
+    where: { cryptoCurrencyId },
   })
 
   if (existingHolding)
@@ -32,13 +32,13 @@ const cryptoCurrencyHoldingsAdd = async (
       "Your portfolio already contains this Cryptocurrency asset."
     )
 
-  const { quote } = await getQuotesDataLatest(id)
+  const { quote } = await getQuotesDataLatest(cryptoCurrencyId)
   const { price, percent_change_24h } = quote["AUD"]
 
   return CryptoCurrencyHoldingModel.create({
     price,
     holdings,
-    cryptoCurrencyId: id,
+    cryptoCurrencyId,
     percentChange24h: percent_change_24h,
     netHoldingsValue: holdings * price,
   })
