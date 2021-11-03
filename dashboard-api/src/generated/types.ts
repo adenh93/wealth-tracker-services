@@ -43,12 +43,18 @@ export type CryptoCurrencyHoldingsUpdateInput = {
 export type Mutation = {
   __typename?: 'Mutation';
   cryptoCurrencyHoldingsAdd?: Maybe<CryptoCurrencyHolding>;
+  cryptoCurrencyHoldingsDelete?: Maybe<CryptoCurrencyHolding>;
   cryptoCurrencyHoldingsUpdate?: Maybe<CryptoCurrencyHolding>;
 };
 
 
 export type MutationCryptoCurrencyHoldingsAddArgs = {
   input: CryptoCurrencyHoldingsAddInput;
+};
+
+
+export type MutationCryptoCurrencyHoldingsDeleteArgs = {
+  id: Scalars['Int'];
 };
 
 

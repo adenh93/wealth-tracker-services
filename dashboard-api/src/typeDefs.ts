@@ -13,6 +13,7 @@ const typeDefs = gql`
     cryptoCurrencyHoldingsUpdate(
       input: CryptoCurrencyHoldingsUpdateInput!
     ): CryptoCurrencyHolding
+    cryptoCurrencyHoldingsDelete(id: Int!): CryptoCurrencyHolding
   }
 
   type CryptoCurrency {
