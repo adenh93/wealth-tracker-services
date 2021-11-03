@@ -23,7 +23,7 @@ cryptoSyncQueue.process(syncCoinMarketCapData)
 
 /** Holdings Sync Queue */
 
-holdingsSyncQueue.add(null)
+holdingsSyncQueue.add(null, { repeat: { cron: "0 * * * *" } })
 
 holdingsSyncQueue.on("completed", () => {
   console.log("Finished syncing holdings data.")
