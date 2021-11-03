@@ -8,11 +8,20 @@ export interface CryptoCurrencyAttributes {
   symbol: string
 }
 
-export interface CryptoCurrencyInstance
-  extends Model<CryptoCurrencyAttributes, CryptoCurrencyAttributes> {}
+export interface CryptoCurrencyHoldingOutput
+  extends Required<CryptoCurrencyAttributes> {}
 
-const CryptoCurrencyModel = sequelize.define<CryptoCurrencyInstance>(
-  "cryptocurrency",
+class CryptoCurrencyModel
+  extends Model<CryptoCurrencyAttributes, CryptoCurrencyAttributes>
+  implements CryptoCurrencyAttributes
+{
+  public id!: number
+  public rank!: number
+  public name!: string
+  public symbol!: string
+}
+
+CryptoCurrencyModel.init(
   {
     id: {
       type: DataTypes.INTEGER,
@@ -32,7 +41,12 @@ const CryptoCurrencyModel = sequelize.define<CryptoCurrencyInstance>(
       field: "symbol",
     },
   },
-  { freezeTableName: true, timestamps: false }
+  {
+    sequelize,
+    tableName: "cryptocurrency",
+    freezeTableName: true,
+    timestamps: false,
+  }
 )
 
 export default CryptoCurrencyModel

@@ -1,6 +1,13 @@
 import { URLSearchParams } from "url"
 import { CMC_API_URL, RESULTS_PER_PAGE } from "../constants"
-import { CMCIDMapResponse, CoinMarketCapCoin, Map } from "../types"
+import { CryptoCurrencyHoldingOutput } from "../database/models/CryptoCurrencyHoldingModel"
+import {
+  CMCEndpoints,
+  CMCIDMapResponse,
+  CMCQuotesResponse,
+  CoinMarketCapCoin,
+  Map,
+} from "../types"
 import { get } from "./fetchUtils"
 
 export const getCoinMarketCapEndpoint = (
@@ -21,10 +28,13 @@ export const getCoinMarketCapData = async (): Promise<CoinMarketCapCoin[]> => {
   const idMapData: CoinMarketCapCoin[] = []
 
   for (let i = 0; ; i += RESULTS_PER_PAGE) {
-    const url: string = getCoinMarketCapEndpoint("cryptocurrency/map", {
-      start: String(i + 1),
-      limit: String(RESULTS_PER_PAGE),
-    })
+    const url: string = getCoinMarketCapEndpoint(
+      CMCEndpoints.CryptoCurrencyMap,
+      {
+        start: String(i + 1),
+        limit: String(RESULTS_PER_PAGE),
+      }
+    )
 
     const { data } = await get<CMCIDMapResponse>(url)
     idMapData.push(...data)
@@ -35,4 +45,20 @@ export const getCoinMarketCapData = async (): Promise<CoinMarketCapCoin[]> => {
   console.log(`Fetched ${idMapData.length} cryptocurrency records.`)
 
   return idMapData
+}
+
+export const getLatestQuoteData = async (
+  holdings: CryptoCurrencyHoldingOutput[]
+): Promise<CMCQuotesResponse> => {
+  const ids: number[] = holdings.map(row => row.cryptoCurrencyId)
+
+  const url: string = getCoinMarketCapEndpoint(
+    CMCEndpoints.CryptoCurrencyQuotes,
+    {
+      id: ids.join(","),
+      convert: "AUD",
+    }
+  )
+
+  return get<CMCQuotesResponse>(url)
 }
