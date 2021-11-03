@@ -2,14 +2,14 @@ import { Op, FindOptions } from "sequelize"
 import { CryptoCurrencyModel } from "../../database/models"
 import {
   CryptoCurrencyAttributes,
-  CryptoCurrencyInstance,
+  CryptoCurrencyOutput,
 } from "../../database/models/CryptoCurrencyModel"
 import { QueryCryptoCurrenciesArgs } from "../../generated/types"
 
 const cryptoCurrencies = async (
   _parent: any,
   { query }: QueryCryptoCurrenciesArgs
-): Promise<CryptoCurrencyInstance[]> => {
+): Promise<CryptoCurrencyOutput[]> => {
   let options: FindOptions<CryptoCurrencyAttributes> = {
     order: [["rank", "asc"]],
     limit: 25,

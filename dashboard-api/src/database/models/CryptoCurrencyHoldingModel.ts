@@ -14,49 +14,64 @@ export interface CryptoCurrencyHoldingAttributes {
 export interface CryptoCurrencyHoldingCreationAttributes
   extends Optional<CryptoCurrencyHoldingAttributes, "id"> {}
 
-export interface CryptoCurrencyHoldingInstance
+export interface CryptoCurrencyHoldingOutput
+  extends Required<CryptoCurrencyHoldingAttributes> {}
+
+class CryptoCurrencyHoldingModel
   extends Model<
     CryptoCurrencyHoldingAttributes,
     CryptoCurrencyHoldingCreationAttributes
-  > {}
+  >
+  implements CryptoCurrencyHoldingAttributes
+{
+  public id!: number
+  public cryptoCurrencyId!: number
+  public price!: number
+  public percentChange24h!: number
+  public holdings!: number
+  public netHoldingsValue!: number
+}
 
-const CryptoCurrencyHoldingModel =
-  sequelize.define<CryptoCurrencyHoldingInstance>(
-    "cryptocurrency_holding",
-    {
-      id: {
-        type: DataTypes.INTEGER,
-        field: "id",
-        primaryKey: true,
-        autoIncrement: true,
-      },
-      cryptoCurrencyId: {
-        type: DataTypes.INTEGER,
-        field: "cryptocurrency_id",
-        references: {
-          model: CryptoCurrencyModel,
-          key: "id",
-        },
-      },
-      price: {
-        type: DataTypes.DOUBLE,
-        field: "price",
-      },
-      percentChange24h: {
-        type: DataTypes.DOUBLE,
-        field: "percent_change_24h",
-      },
-      holdings: {
-        type: DataTypes.DOUBLE,
-        field: "holdings",
-      },
-      netHoldingsValue: {
-        type: DataTypes.DOUBLE,
-        field: "net_holdings_value",
+CryptoCurrencyHoldingModel.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      field: "id",
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    cryptoCurrencyId: {
+      type: DataTypes.INTEGER,
+      field: "cryptocurrency_id",
+      references: {
+        model: CryptoCurrencyModel,
+        key: "id",
       },
     },
-    { freezeTableName: true, timestamps: false }
-  )
+    price: {
+      type: DataTypes.DOUBLE,
+      field: "price",
+    },
+    percentChange24h: {
+      type: DataTypes.DOUBLE,
+      field: "percent_change_24h",
+    },
+    holdings: {
+      type: DataTypes.DOUBLE,
+      field: "holdings",
+    },
+    netHoldingsValue: {
+      type: DataTypes.DOUBLE,
+      field: "net_holdings_value",
+    },
+  },
+  {
+    sequelize,
+    tableName: "cryptocurrency_holding",
+    freezeTableName: true,
+    timestamps: false,
+  }
+)
 
 CryptoCurrencyHoldingModel.hasOne(CryptoCurrencyModel, {
   foreignKey: "id",

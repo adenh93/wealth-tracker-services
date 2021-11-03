@@ -5,22 +5,20 @@ import {
   CryptoCurrencyModel,
   CryptoCurrencyHoldingModel,
 } from "../../database/models"
-import { CryptoCurrencyHoldingInstance } from "../../database/models/CryptoCurrencyHoldingModel"
-import { CryptoCurrencyInstance } from "../../database/models/CryptoCurrencyModel"
+import { CryptoCurrencyHoldingOutput } from "../../database/models/CryptoCurrencyHoldingModel"
 
 const cryptoCurrencyHoldingsAdd = async (
   _parent: any,
   { input }: MutationCryptoCurrencyHoldingsAddArgs
-): Promise<CryptoCurrencyHoldingInstance> => {
+): Promise<CryptoCurrencyHoldingOutput> => {
   const { id, holdings } = input
 
   if (holdings <= 0)
     throw new ApolloError("You must add at least one unit to your holdings.")
 
-  const cryptoCurrency: CryptoCurrencyInstance =
-    await CryptoCurrencyModel.findOne({
-      where: { id },
-    })
+  const cryptoCurrency = await CryptoCurrencyModel.findOne({
+    where: { id },
+  })
 
   if (!cryptoCurrency)
     throw new ApolloError("The specified Cryptocurrency asset does not exist.")

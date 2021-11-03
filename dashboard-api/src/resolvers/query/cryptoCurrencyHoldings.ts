@@ -2,12 +2,12 @@ import {
   CryptoCurrencyHoldingModel,
   CryptoCurrencyModel,
 } from "../../database/models"
-import { CryptoCurrencyHoldingInstance } from "../../database/models/CryptoCurrencyHoldingModel"
+import { CryptoCurrencyHoldingOutput } from "../../database/models/CryptoCurrencyHoldingModel"
 
 const cryptoCurrencyHoldings = async (
   _parent: any,
   _args: any
-): Promise<CryptoCurrencyHoldingInstance[]> =>
+): Promise<CryptoCurrencyHoldingOutput[]> =>
   CryptoCurrencyHoldingModel.findAll({
     order: [["net_holdings_value", "desc"]],
     include: { model: CryptoCurrencyModel, as: "cryptoCurrency" },

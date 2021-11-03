@@ -8,7 +8,7 @@ export interface CryptoCurrencyAttributes {
   symbol: string
 }
 
-export interface CryptoCurrencyHoldingOutput
+export interface CryptoCurrencyOutput
   extends Required<CryptoCurrencyAttributes> {}
 
 class CryptoCurrencyModel
