@@ -10,8 +10,8 @@ const cryptoCurrencies = async (
   _parent: any,
   { query }: QueryCryptoCurrenciesArgs
 ): Promise<CryptoCurrencyInstance[]> => {
-  console.log(query)
   let options: FindOptions<CryptoCurrencyAttributes> = {
+    order: [["rank", "asc"]],
     limit: 25,
     raw: true,
     nest: true,
@@ -24,8 +24,6 @@ const cryptoCurrencies = async (
         { symbol: { [Op.iLike]: `%${query}%` } },
       ],
     }
-
-  console.log(options)
 
   return CryptoCurrencyModel.findAll(options)
 }

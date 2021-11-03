@@ -16,10 +16,3 @@ export interface CoinMarketCapCoin {
   first_historical_data: string
   last_historical_data: string
 }
-
-export interface CryptoCurrency {
-  id: number
-  rank: number
-  name: string
-  symbol: string
-}
