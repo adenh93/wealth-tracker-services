@@ -1,11 +1,14 @@
-import { ApolloError } from "apollo-server-errors"
-import { MutationCryptoCurrencyHoldingsAddArgs } from "../../generated/types"
+import {
+  CryptoCurrencyHoldingsAddInput,
+  MutationCryptoCurrencyHoldingsAddArgs,
+} from "../../generated/types"
 import { getQuotesDataLatest } from "../../utils/coinMarketCapAPI"
 import {
   CryptoCurrencyModel,
   CryptoCurrencyHoldingModel,
 } from "../../database/models"
 import { CryptoCurrencyHoldingOutput } from "../../database/models/CryptoCurrencyHoldingModel"
+import { UserFormInputError } from "../../errors"
 
 const cryptoCurrencyHoldingsAdd = async (
   _parent: any,
@@ -14,22 +17,29 @@ const cryptoCurrencyHoldingsAdd = async (
   const { cryptoCurrencyId, holdings } = input
 
   if (holdings <= 0)
-    throw new ApolloError("You must add at least one unit to your holdings.")
+    throw new UserFormInputError<CryptoCurrencyHoldingsAddInput>(
+      "You must add at least one unit to your holdings.",
+      { field: "holdings" }
+    )
 
   const cryptoCurrency = await CryptoCurrencyModel.findOne({
     where: { id: cryptoCurrencyId },
   })
 
   if (!cryptoCurrency)
-    throw new ApolloError("The specified Cryptocurrency asset does not exist.")
+    throw new UserFormInputError<CryptoCurrencyHoldingsAddInput>(
+      "The specified Cryptocurrency asset does not exist.",
+      { field: "cryptoCurrencyId" }
+    )
 
   const existingHolding = await CryptoCurrencyHoldingModel.findOne({
     where: { cryptoCurrencyId },
   })
 
   if (existingHolding)
-    throw new ApolloError(
-      "Your portfolio already contains this Cryptocurrency asset."
+    throw new UserFormInputError<CryptoCurrencyHoldingsAddInput>(
+      "Your portfolio already contains this Cryptocurrency asset.",
+      { field: "cryptoCurrencyId" }
     )
 
   const { quote } = await getQuotesDataLatest(cryptoCurrencyId)

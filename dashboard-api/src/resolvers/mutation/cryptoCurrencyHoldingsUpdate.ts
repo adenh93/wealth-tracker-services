@@ -1,10 +1,13 @@
-import { ApolloError } from "apollo-server-errors"
-import { MutationCryptoCurrencyHoldingsUpdateArgs } from "../../generated/types"
+import {
+  CryptoCurrencyHoldingsUpdateInput,
+  MutationCryptoCurrencyHoldingsUpdateArgs,
+} from "../../generated/types"
 import { CryptoCurrencyHoldingModel } from "../../database/models"
 import {
   CryptoCurrencyHoldingAttributes,
   CryptoCurrencyHoldingOutput,
 } from "../../database/models/CryptoCurrencyHoldingModel"
+import { UserFormInputError } from "../../errors"
 
 const cryptoCurrencyHoldingsUpdate = async (
   _parent: any,
@@ -13,7 +16,10 @@ const cryptoCurrencyHoldingsUpdate = async (
   const { id, holdings } = input
 
   if (holdings <= 0)
-    throw new ApolloError("You must add at least one unit to your holdings.")
+    throw new UserFormInputError<CryptoCurrencyHoldingsUpdateInput>(
+      "You must add at least one unit to your holdings.",
+      { field: "holdings" }
+    )
 
   const existingHolding = await CryptoCurrencyHoldingModel.findOne({
     where: { id },
@@ -21,7 +27,10 @@ const cryptoCurrencyHoldingsUpdate = async (
   })
 
   if (!existingHolding)
-    throw new ApolloError("This asset does not exist in your portfolio.")
+    throw new UserFormInputError<CryptoCurrencyHoldingsUpdateInput>(
+      "This asset does not exist in your portfolio.",
+      { field: "id" }
+    )
 
   const updated: CryptoCurrencyHoldingAttributes = {
     ...existingHolding,

@@ -1,7 +1,7 @@
-import { ApolloError } from "apollo-server-errors"
 import { MutationCryptoCurrencyHoldingsDeleteArgs } from "../../generated/types"
 import { CryptoCurrencyHoldingModel } from "../../database/models"
 import { CryptoCurrencyHoldingOutput } from "../../database/models/CryptoCurrencyHoldingModel"
+import { UserFormInputError } from "../../errors"
 
 const cryptoCurrencyHoldingsDelete = async (
   _parent: any,
@@ -12,7 +12,12 @@ const cryptoCurrencyHoldingsDelete = async (
   })
 
   if (!existingHolding)
-    throw new ApolloError("This asset does not exist in your portfolio.")
+    throw new UserFormInputError<MutationCryptoCurrencyHoldingsDeleteArgs>(
+      "This asset does not exist in your portfolio.",
+      {
+        field: "id",
+      }
+    )
 
   await CryptoCurrencyHoldingModel.destroy({
     where: { id },
