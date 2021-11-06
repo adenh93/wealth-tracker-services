@@ -9,13 +9,13 @@ const holdingsSyncQueue = new Queue("holdings-sync", { redis })
 
 /** Crypto Sync Queue */
 
-cryptoSyncQueue.add(null, { repeat: { cron: "0 22 * * *" } })
+cryptoSyncQueue.add(null)
 
 cryptoSyncQueue.on("completed", () => {
   console.log("Finished syncing cryptocurrency data.")
 })
 
-cryptoSyncQueue.on("failed", err => {
+cryptoSyncQueue.on("failed", (err) => {
   console.error("An error occured while syncing cryptocurrencies: ", err)
 })
 
@@ -23,13 +23,13 @@ cryptoSyncQueue.process(syncCoinMarketCapData)
 
 /** Holdings Sync Queue */
 
-holdingsSyncQueue.add(null, { repeat: { cron: "0 * * * *" } })
+holdingsSyncQueue.add(null)
 
 holdingsSyncQueue.on("completed", () => {
   console.log("Finished syncing holdings data.")
 })
 
-holdingsSyncQueue.on("failed", err => {
+holdingsSyncQueue.on("failed", (err) => {
   console.error("An error occured while syncing holdings: ", err)
 })
 

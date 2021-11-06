@@ -10,6 +10,12 @@ const syncHoldingsValue = async (_job: any) => {
   console.log("Starting holdings sync.")
   const holdings: CryptoCurrencyHoldingOutput[] =
     await getCryptoCurrencyHoldings()
+
+  if (!holdings.length) {
+    console.log("No cryptocurrency holdings to sync.")
+    return
+  }
+
   const data: CMCQuotesResponse = await getLatestQuoteData(holdings)
   await updateCryptoCurrencyHoldings(holdings, data)
 }
